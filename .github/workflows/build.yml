@@ -15,7 +15,9 @@ jobs:
             - name: Install Dependencies
               run: npm ci
             - name: Run linters
-              run: npm lint
+              uses: wearerequired/lint-action@v1
+              with:
+                eslint: true
     Test_Job:
         needs: Build_Job
         runs-on: ubuntu-latest

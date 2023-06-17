@@ -3,7 +3,7 @@ name: 'Build and Test'
 on: workflow_dispatch
 
 jobs:
-    Build_Job:
+    Run_lint_job:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout Code
@@ -15,14 +15,38 @@ jobs:
             - name: Install Dependencies
               run: npm ci
             - name: Run linters
-              uses: wearerequired/lint-action@v1
-              with:
-                eslint: true
+              run: npm run lint
     Test_Job:
-        needs: Build_Job
+        needs: Run_lint_job
         runs-on: ubuntu-latest
         steps:
+            - name: Checkout Code
+              uses: actions/checkout@v3
+            - name: Setup Nodejs
+              uses: actions/setup-node@v3
+              with:
+                node-version: 18
+            - name: Install Dependencies
+              run: npm ci
             - name: Run test
-              run: npm test
+              uses: npm run test
+        
+    Deploy_Job:
+        needs: Test_Job
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v3
+            - name: Setup Nodejs
+              uses: actions/setup-node@v3
+              with:
+                node-version: 18
+            - name: Install Dependencies
+              run: npm ci
+            - name: Run Build
+              run: npm run build
+            - name: Deploy step
+              run: echo "Deployimg"
+
               
 

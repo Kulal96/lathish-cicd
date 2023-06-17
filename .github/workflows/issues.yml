@@ -1,0 +1,11 @@
+name: 'Issue-Workflow'
+
+on: 
+    issues:
+        types: [opened, edited, milestoned]
+jobs:
+    issue-details:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Git Hub context
+              run: echo "${{github.event_name}}"
